@@ -1,0 +1,5 @@
+/app/.env
+.idea
+__init__.py
+ app/models/__pycache__
+ app/__pycache__
