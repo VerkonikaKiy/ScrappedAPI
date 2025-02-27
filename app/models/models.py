@@ -1,9 +1,7 @@
 from datetime import datetime
 
-from sqlalchemy import URL, create_engine, text, Table, Column
+from sqlalchemy import Table, Column
 from sqlalchemy import Integer, String, Boolean, MetaData, ForeignKey, Text, DateTime
-
-import enum
 
 
 metadata = MetaData()

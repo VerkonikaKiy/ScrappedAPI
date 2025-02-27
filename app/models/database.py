@@ -8,7 +8,8 @@ engine = create_engine(
 )
 connection = engine.connect()
 
-SessionLocal = sessionmaker(autoflush=False, bind=engine)
+SessionLocal = sessionmaker(engine, autoflush=False)
+
 
 def get_db():
     db = SessionLocal()

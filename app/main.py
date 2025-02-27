@@ -5,6 +5,6 @@ from api.tasks import all_tasks
 
 
 app = FastAPI()
-app.include_router(all_tasks.router)
+app.include_router(all_tasks.task_router)
 
 
