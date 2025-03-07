@@ -1,26 +1,26 @@
+from typing import Sequence
+
 from sqlalchemy import select
+from sqlalchemy.orm import Session
+
 from models.database import get_db
-from models.models import task
+from models.models import Task
 from .task_schemas import AllTasks, CreateTask
 
 
 class TaskRepository:
     @classmethod
-    def add_task(cls, task_schema: CreateTask):
-        with get_db() as session:
-            data = task_schema.model_dump()
-            new_task = task(**data)
-            session.add(new_task)
-            session.flush()
-            session.commit()
-            session.close()
-            return new_task
+    def add_task(cls, task_schema: CreateTask, db: Session):
+        data = task_schema.model_dump()
+        new_task = Task(**data)
+        db.add(new_task)
+        db.commit()
+        return new_task
 
     @classmethod
-    def get_tasks(cls) -> list[AllTasks]:
-        with get_db() as session:
-            query = select(task)
-            result = session.execute(query)
-            task_models = result.scalars().all()
-            tasks = [AllTasks.model_validate(task_model) for task_model in task_models]
-            return tasks
+    def get_tasks(cls, task_schema: AllTasks, db: Session) -> Sequence[Task]:
+        return db.execute(select(Task)).scalars().all()
+
+    @classmethod
+    def get_task_info(cls, db: Session, uuid) -> Sequence[Task]:
+        return db.execute(select(Task).filter_by(uuid=uuid)).scalar()

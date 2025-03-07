@@ -10,10 +10,10 @@ connection = engine.connect()
 
 SessionLocal = sessionmaker(engine, autoflush=False)
 
-
 def get_db():
     db = SessionLocal()
     try:
+        print('...')
         yield db
     finally:
         db.close()
