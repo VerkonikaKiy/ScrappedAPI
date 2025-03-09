@@ -18,7 +18,7 @@ class TaskRepository:
         return new_task
 
     @classmethod
-    def get_tasks(cls, task_schema: AllTasks, db: Session) -> Sequence[Task]:
+    def get_tasks(cls, db: Session) -> Sequence[Task]:
         return db.execute(select(Task)).scalars().all()
 
     @classmethod

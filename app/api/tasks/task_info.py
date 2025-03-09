@@ -16,6 +16,6 @@ single_task_router = APIRouter()
 
 
 @single_task_router.get('/api/tasks/{uuid}')
-def get_task(uuid: uuid4, task_schema: AllTasks, db: Session = Depends(get_db)):
+def get_task(uuid: uuid4, db: Session = Depends(get_db)):
     task = TaskRepository.get_task_info(uuid, db)
     return JSONResponse(jsonable_encoder(task), status_code=status.HTTP_200_OK)

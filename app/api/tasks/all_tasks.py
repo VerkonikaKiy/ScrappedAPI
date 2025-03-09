@@ -17,8 +17,8 @@ task_router = APIRouter()
 
 
 @task_router.get('/api/tasks')
-def get_all_tasks(task_schema: AllTasks, db: Session = Depends(get_db)):
-    task_list = TaskRepository.get_tasks(task_schema, db)
+def get_all_tasks(db: Session = Depends(get_db)):
+    task_list = TaskRepository.get_tasks(db)
     return JSONResponse(jsonable_encoder(task_list), status_code=status.HTTP_200_OK)
 
 
