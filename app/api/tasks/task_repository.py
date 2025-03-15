@@ -1,4 +1,5 @@
 from typing import Sequence
+from uuid import uuid4, UUID
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -22,5 +23,12 @@ class TaskRepository:
         return db.execute(select(Task)).scalars().all()
 
     @classmethod
-    def get_task_info(cls, db: Session, uuid) -> Sequence[Task]:
+    def get_task_info(cls, db: Session, uuid: UUID) -> Sequence[Task]:
         return db.execute(select(Task).filter_by(uuid=uuid)).scalar()
+
+    @classmethod
+    def delete_task(cls, db: Session, uuid: UUID) -> Sequence[Task]:
+        task = db.execute(select(Task).filter_by(uuid=uuid)).scalar()
+        db.delete(task)
+        db.commit()
+        return {"response": "deleted"}
