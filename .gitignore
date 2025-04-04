@@ -3,4 +3,10 @@
 __init__.py
  app/models/__pycache__
  app/__pycache__
-/app/api/tasks/all_tasks.py
+/app/scheduler/run_task.py
+/app/broker/consumer.py
+/app/broker/producer.py
+/app/broker/rabbit_channel.py
+/app/alembic.ini
+/app/api/pagination/paginate.py
+/app/api/pagination/pagination_schema.py

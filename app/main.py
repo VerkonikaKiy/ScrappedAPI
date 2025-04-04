@@ -1,6 +1,4 @@
-from fastapi import FastAPI, Depends, APIRouter
-import os
-from typing import Optional
+from fastapi import FastAPI, APIRouter
 
 from fastapi_pagination import add_pagination
 
