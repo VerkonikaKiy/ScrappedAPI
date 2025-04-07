@@ -1,44 +1,49 @@
+import uuid
 from datetime import datetime
 
-from sqlalchemy import URL, create_engine, text, Table, Column
-from sqlalchemy import Integer, String, Boolean, MetaData, ForeignKey, Text, DateTime
+from sqlalchemy import Integer, String, DateTime, Enum, MetaData, Text, Boolean, ForeignKey
+from sqlalchemy import Table, Column
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.orm import declarative_base
 
-import enum
+ModelBase = declarative_base()
 
 
 metadata = MetaData()
+class Post(ModelBase):
+    __tablename__ = 'post'
+    uuid = Column(UUID(as_uuid=True), default=uuid.uuid4, primary_key=True, unique=True)
+    title = Column(String(200), nullable=True)
+    preview_text = Column(Text(), nullable=True)
+    link = Column(String(200), nullable=True)
+    is_new = Column(Boolean(), default=True)
+    is_viewed = Column(Boolean(), default=True)
 
-post = Table('post', metadata,
-    Column('uuid', Integer(), primary_key=True),
-    Column('title', String(200), nullable=True),
-    Column('preview_text', Text(),  nullable=True),
-    Column('link', String(200), nullable=True),
-    Column('is_new', Boolean(), default=True),
-    Column('is_viewed', Boolean(), default=True),
-)
 
-post_info = Table('post_info', metadata,
-    Column('uuid', Integer(), ForeignKey("post.uuid"), primary_key=True),
-    Column('author_link', String(200), nullable=True),
-    Column('author_name', String(200),  nullable=True),
-    Column('text', Text(), nullable=True),
-    Column('count_reactions', Integer(), default=True),
-)
+class PostInfo(ModelBase):
+    __tablename__ = 'post_info'
+    uuid = Column(UUID(as_uuid=True), default=uuid.uuid4, primary_key=True, unique=True)
+    author_link = Column(String(200), nullable=True)
+    author_name = Column(String(200), nullable=True)
+    text = Column(Text(), nullable=True)
+    count_reactions = Column(Integer(), nullable=True)
+    uuid_post = Column(UUID(as_uuid=True), ForeignKey("post.uuid"))
 
-comment = Table('comment', metadata,
-    Column('uuid', Integer(), primary_key=True),
-    Column('author_link', String(200), nullable=True),
-    Column('author_name', String(200),  nullable=True),
-    Column('comment_text', Text(), nullable=True),
-    Column('uuid_post_info', Integer(), ForeignKey("post_info.uuid")),
-)
 
-task = Table('task', metadata,
-    Column('uuid', Integer(), primary_key=True),
-    Column('site_link', String(200), nullable=True),
-    Column('start_time', DateTime(), default=datetime.now),
-    Column('end_time', DateTime(), default=datetime.now),
-    Column('status', String(200)),
-    Column('last_post_id', Integer()),
-)
+class Comment(ModelBase):
+    __tablename__ = 'comment'
+    uuid = Column(UUID(as_uuid=True), default=uuid.uuid4, primary_key=True, unique=True)
+    author_link = Column(String(200), nullable=True)
+    author_name = Column(String(200), nullable=True)
+    comment_text = Column(Text(), nullable=True)
+    uuid_post_info = Column(UUID(as_uuid=True), ForeignKey("post_info.uuid"))
 
+
+class Task(ModelBase):
+    __tablename__ = 'task'
+    uuid = Column(UUID(as_uuid=True), default=uuid.uuid4, primary_key=True, unique=True)
+    site_link = Column(String(200), nullable=True)
+    start_time = Column(DateTime, default=datetime.now)
+    end_time = Column(DateTime, nullable=True)
+    status = Column(String, default="Not started")
+    last_post_id = Column(Integer, nullable=True)
