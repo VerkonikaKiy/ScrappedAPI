@@ -8,7 +8,7 @@ class Status(str, Enum):
     not_started = 'not_started'
     in_progress = 'in_progress'
     failed = 'failed'
-    successfull = 'successfull'
+    successful = 'successful'
 
 class SiteLink(str, Enum):
     habr = 'https://habr.com/'
